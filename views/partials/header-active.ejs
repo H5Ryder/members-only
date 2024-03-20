@@ -1,0 +1,52 @@
+<div class="headerBar gap-6">
+
+  <button type="button" class="button headerButton" onclick="window.location.href='/'">
+    <span class="button-text font-serif-display text-1xl">SECRET CLUB</span>
+  </button>
+
+  <div class="buttonsBar gap-6">
+
+
+    <% if (user.isMember) { %>
+      <button disabled type="button" class="button auto-focus" onclick="window.location.href='/become-member '">
+        <span class="button-icon"><ion-icon name="people-circle"></ion-icon></span>
+      </button>
+      <% } %>
+
+
+        <% if (user.isAdmin) { %>
+          <button disabled type="button" class="button auto-focus" onclick="window.location.href='/become-admin'">
+            <span class="button-icon"><ion-icon name="key"></ion-icon></span>
+          </button>
+          <% } %>
+
+
+
+
+    <% if (!user.isMember) { %>
+      <button type="button" class="button" onclick="window.location.href='/become-member'">
+        <span class="button-icon"><ion-icon name="people-circle"></ion-icon></span>
+        <span class="button-text font-serif-display text-1xl">BECOME MEMBER</span>
+      </button>
+      <% } %>
+
+
+        <% if (!user.isAdmin) { %>
+          <button type="button" class="button" onclick="window.location.href='/become-admin'">
+            <span class="button-icon"><ion-icon name="key"></ion-icon></span>
+            <span class="button-text font-serif-display text-1xl">BECOME Admin</span>
+          </button>
+          <% } %>
+
+
+
+
+            <button type="button" class="button" onclick="window.location.href='/logout'">
+              <span class="button-icon"><ion-icon name="play-skip-forward"></ion-icon></span>
+              <span class="button-text font-serif-display text-1xl">LOG OUT</span>
+            </button>
+
+
+  </div>
+
+</div>

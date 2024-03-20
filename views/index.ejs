@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel='stylesheet' href='/stylesheets/output-style.css' />
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="eye.ico?v=1.1">
+  <title>Secret Club</title>
+
+
+
+
+</head>
+
+<body class="p-16 flex flex-col">
+
+  <%- include(user ? 'partials/header-active' : 'partials/header' ) %>
+
+    <div class="mt-16">
+      <h1 class="changingText font-serif-display text-6xl"> A <span class="highlight">secret</span> club for members
+        only.
+      </h1>
+    </div>
+
+
+    <div class="content mt-10 h-screen gap-16">
+
+      <div class="assertions flex-shrink font-serif-display text-4xl flex flex-col gap-4">
+        <h2><span class="purple-underline">Anyone</span> can send messages</h2>
+        <h2><span class="purple-underline">Anyone</span> can see title and content</h2>
+        <h2>Only <span class="purple-underline">Members</span> can see author and date</h2>
+
+        <% if (!user) { %>
+          <button class="mt-10 text-2xl text-center" onclick="window.location.href='/sign-up'">Join the
+            Conversation</button>
+          <% } %>
+
+            <div class="mt-auto">
+
+
+              <% if (user) { %>
+                <h4 class="text-xl">Welcome back <%= user.username %>
+                </h4>
+
+                <% if (user.isAdmin && user.isMember) { %>
+                  <h4 class="pb-2 text-xl">You have Admin and Membership</h4>
+                  <%} else if (user.isAdmin) { %>
+                    <h4 class="pb-2">You have Admin</h4>
+                    <%} else if (user.isMember) {%>
+                      <h4 class="pb-2">You have Membership</h4>
+
+                      <%} %>
+                        <%} %>
+
+            </div>
+
+      </div>
+
+      <div class="message_board flex-grow flex flex-col">
+        <div class="board_header bg-main p-1">
+          <p class="text-white">CHAT</p>
+        </div>
+
+        <div class="messages flex-grow flex flex-col flex-1 p-2 gap-2">
+          <% posts.forEach(post=> { %>
+            <div class="<%= (user && post.user.id == user.id) ? 'chat-bubble-self' : 'chat-bubble' %> relative">
+              <h3><strong>
+                  <%= post.title %>
+                </strong></h3>
+              <p class="three-line-clamp">
+                <%= post.text %>
+              </p>
+
+
+              <div>
+                <%= (user && user.isMember) ? post.user.username + ' - ' + post.date : 'Name: ***** - Date: ********' %>
+              </div>
+
+
+              <% if (user && user.isAdmin) { %>
+                <button
+                  class="close-button absolute h-1 w-2 top-0 right-0 border-none flex items-center justify-center rounded-none"
+                  onclick="window.location.href='/delete-post?id=<%= post.id %>'"><span class="button-icon"><ion-icon
+                      name="close-circle"></ion-icon></span></button>
+                <% } %>
+
+            </div>
+            <% }) %>
+
+
+        </div>
+
+        <div class="form-inputs">
+
+
+          <form class="form flex flex-col p-2 gap-2" action="/new-post" method="POST">
+
+            <input type="text" class="input form-features" name="title" placeholder="Title">
+            <div class="flex gap-2">
+              <textarea class="textarea form-features resize-none flex-1" name="text"
+                placeholder="Description"></textarea>
+              <button type="submit" class="button rounded-sm h-full font-serif-display">SEND</button>
+            </div>
+          </form>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const h1Element = document.querySelector('.highlight');
+        function animateWords(wordArray, element) {
+
+          let add = false;
+          let index = 0;
+
+          const interval = setInterval(function () {
+
+            let word = wordArray[0];
+
+
+            if (index < word.length + 1) {
+              const insertText = add ? word.substring(0, index) : word.substring(0, word.length - index);
+              element.textContent = `${insertText}`;
+              index++
+              console.log(insertText);
+            } else {
+
+              if (add && (wordArray.length == 1)) {
+                clearInterval(interval);
+              } else if (!add) {
+                wordArray.shift();
+                add = !add;
+                index = 0;
+              } else {
+                add = !add;
+                index = 0;
+                console.log(`Add is ${add}`);
+              }
+            }
+
+          }, 100);
+        }
+        animateWords(["secret", "hidden", "covert", "secret"], h1Element);
+      });
+
+      // for (let i = 1; i <= 4; i++) {
+      //   insertMessage(`Title ${i}`, `mmessages ${i}`, `User ${i}`, new Date().toLocaleString());
+      // }
+
+      // insertMessage(`Title 5`, `Message 5`, `User 5`, new Date().toLocaleString(), true);
+
+      function insertMessage(title, message, username, date, match = false) {
+        const messagesDiv = document.querySelector('.messages');
+
+        const chatBubble = document.createElement('div');
+
+        if (match) {
+          chatBubble.classList.add('chat-bubble-self');
+        } else {
+          chatBubble.classList.add('chat-bubble');
+        }
+
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = title;
+
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messageElement.classList.add('three-line-clamp'); // Add this line
+
+        const userInfoElement = document.createElement('div');
+        userInfoElement.textContent = `${username} - ${date}`;
+
+        chatBubble.appendChild(titleElement);
+        chatBubble.appendChild(messageElement);
+        chatBubble.appendChild(userInfoElement);
+
+        messagesDiv.appendChild(chatBubble);
+      }
+
+
+
+
+
+
+
+      var messages = document.querySelector('.messages');
+      messages.scrollTop = messages.scrollHeight;
+
+
+    </script>
+
+</body>
+
+</html>
