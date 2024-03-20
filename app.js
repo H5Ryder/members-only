@@ -15,6 +15,7 @@ const compression = require("compression");
 
 
 
+
 console.log(process.env) // remove this after you've confirmed it is working
 
 
@@ -24,6 +25,9 @@ const usersRouter = require('./routes/users');
 
 // Create the Express application
 const app = express();
+
+app.use(favicon(__dirname + '/public/images/favicon.ico')); 
+
 
 
 // Set up rate limiter: maximum of twenty requests per minute
@@ -44,7 +48,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(compression()); // Compress all routes
 
 

@@ -8,6 +8,9 @@
 
   <link rel="icon" href="eye.ico?v=1.1">
   <title>Secret Club</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v="+ Math.trunc(Math.random()*999)>
+
+
 
 
 
@@ -25,7 +28,7 @@
     </div>
 
 
-    <div class="content mt-10 h-screen gap-16">
+    <div class="content min-h-2 mt-10 h-screen gap-16">
 
       <div class="assertions flex-shrink font-serif-display text-4xl flex flex-col gap-4">
         <h2><span class="purple-underline">Anyone</span> can send messages</h2>
@@ -58,12 +61,12 @@
 
       </div>
 
-      <div class="message_board flex-grow flex flex-col">
+      <div class="message_board min-h-2flex-grow flex flex-col">
         <div class="board_header bg-main p-1">
           <p class="text-white">CHAT</p>
         </div>
 
-        <div class="messages flex-grow flex flex-col flex-1 p-2 gap-2">
+        <div class="messages min-h-2 flex-grow flex flex-col flex-1 p-2 gap-2">
           <% posts.forEach(post=> { %>
             <div class="<%= (user && post.user.id == user.id) ? 'chat-bubble-self' : 'chat-bubble' %> relative">
               <h3><strong>
