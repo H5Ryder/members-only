@@ -34,13 +34,13 @@ router.get("/", async function (req, res, next) {
 //FAILED LOGIN
 router.get("/login-failure", function (req, res, next) {
   //res.render('index', { title: 'Express' });
-  res.send(`<h1>Login Failure</h1>`);
+  res.render(`log-in-form`,{failure: true});
 });
 
 // Login------------
 // GET--------------
 router.get("/login", (req, res, next) => {
-  res.render("log-in-form");
+  res.render("log-in-form", {failure: false});
 });
 // POST-------------
 router.post(

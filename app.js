@@ -20,7 +20,6 @@ console.log(process.env) // remove this after you've confirmed it is working
 
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 
 // Create the Express application
@@ -95,7 +94,6 @@ app.use((req,res,next) => {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
