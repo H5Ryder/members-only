@@ -1,4 +1,4 @@
-#Express MongoDB Boilerplate Messaging App
+# Members Only Express MongoDB App
 
 ### Description
 
